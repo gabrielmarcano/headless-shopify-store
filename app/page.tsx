@@ -1,38 +1,20 @@
 import { getProductsInCollection } from "@/lib/shopify";
-import Image from "next/image";
+import { ProductCard } from "@/components/ProductCard";
+import { Product } from "@/lib/types";
 
 export default async function Home() {
   const products = await getProductsInCollection();
 
   return (
-    <main className="min-h-screen p-24">
-      <h1 className="text-4xl font-bold mb-8 text-center">My Headless Store</h1>
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-8">
+        New Arrivals
+      </h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {products.map((item) => {
-          const product = item.node;
-          console.log(product);
-          const image = product.images.edges[0]?.node || {};
-
-          
-          return (
-            <div key={product.id} className="border p-4 rounded-lg shadow hover:shadow-lg transition">
-              <div className="relative w-full h-64 mb-4">
-                 <Image
-                   src={image.url}
-                   alt={image.altText || "Product Image"}
-                   fill
-                   className="object-cover rounded"
-                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                 />
-              </div>
-              <h2 className="text-xl font-semibold">{product.title}</h2>
-              <p className="text-gray-600">
-                ${product.priceRange.minVariantPrice.amount}
-              </p>
-            </div>
-          );
-        })}
+      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        {products.map((item: { node: Product }) => (
+          <ProductCard key={item.node.id} product={item.node} />
+        ))}
       </div>
     </main>
   );
