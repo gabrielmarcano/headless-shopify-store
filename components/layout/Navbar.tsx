@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/components/cart/CartContext";
 
@@ -24,31 +24,26 @@ export function Navbar() {
 					STORE<span className="text-blue-600">FRONT</span>
 				</Link>
 
-				{/* Navigation Links */}
+				{/* SEARCH BAR (New Feature) */}
+				<div className="hidden md:flex flex-1 max-w-md mx-8">
+					<form action="/search" className="relative w-full">
+						<input
+							type="text"
+							name="q"
+							placeholder="Search for products..."
+							className="w-full rounded-md border border-gray-300 bg-gray-50 py-2 pl-10 pr-4 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition-all"
+						/>
+						<Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+					</form>
+				</div>
+
+				{/* Navigation Links (Simplified for space) */}
 				<div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
-					<Link
-						href="/collections/all"
-						className="hover:text-blue-600 transition-colors"
-					>
-						All Products
+					<Link href="/collections/all" className="hover:text-blue-600">
+						All
 					</Link>
-					<Link
-						href="/collections/hydrogen"
-						className="hover:text-blue-600 transition-colors"
-					>
+					<Link href="/collections/hydrogen" className="hover:text-blue-600">
 						Hydrogen
-					</Link>
-					<Link
-						href="/collections/automated-collection"
-						className="hover:text-blue-600 transition-colors"
-					>
-						Automated
-					</Link>
-					<Link
-						href="/collections/frontpage"
-						className="hover:text-blue-600 transition-colors"
-					>
-						Home Collection
 					</Link>
 				</div>
 

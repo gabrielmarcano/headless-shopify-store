@@ -70,6 +70,16 @@ export type ShopifyResponse<Data> = {
 	errors?: Array<{ message: string }>; // Added error typing
 };
 
+export type ProductsResponse = ShopifyResponse<{
+	products: {
+		edges: Array<{ node: Product }>;
+	};
+}>;
+
+export type ProductResponse = ShopifyResponse<{
+	product: ProductByHandle;
+}>;
+
 export type CollectionResponse = ShopifyResponse<{
 	collectionByHandle: {
 		title: string;
@@ -79,14 +89,10 @@ export type CollectionResponse = ShopifyResponse<{
 	} | null;
 }>;
 
-export type ProductsResponse = ShopifyResponse<{
-	products: {
+export type SearchResponse = ShopifyResponse<{
+	search: {
 		edges: Array<{ node: Product }>;
 	};
-}>;
-
-export type ProductResponse = ShopifyResponse<{
-	product: ProductByHandle;
 }>;
 
 export type CartCreateResponse = ShopifyResponse<{

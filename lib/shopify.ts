@@ -11,6 +11,7 @@ import type {
 	ProductByHandle,
 	ProductResponse,
 	ProductsResponse,
+	SearchResponse,
 } from "./types";
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
@@ -167,6 +168,48 @@ export async function getCollectionProducts(handle: string) {
 	const variables = { handle };
 	const response = await ShopifyData<CollectionResponse>(query, variables);
 	return response.data.collectionByHandle;
+}
+
+export async function searchProducts(
+	query: string,
+	sortKey = "RELEVANCE",
+	reverse = false,
+) {
+	const gqlQuery = `
+    query searchProducts($query: String!, $sortKey: SearchSortKeys!, $reverse: Boolean!) {
+      search(query: $query, sortKey: $sortKey, reverse: $reverse, types: PRODUCT, first: 20) {
+        edges {
+          node {
+            ... on Product {
+              id
+              title
+              handle
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+	const variables = { query, sortKey, reverse };
+
+	// We can reuse ProductsResponse type here as the shape is similar enough for the grid
+	const response = await ShopifyData<SearchResponse>(gqlQuery, variables);
+	return response.data.search;
 }
 
 // --- MUTATIONS ---
