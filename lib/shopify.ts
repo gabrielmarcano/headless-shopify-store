@@ -4,6 +4,8 @@ import type {
 	Cart,
 	CartAddResponse,
 	CartCreateResponse,
+	CartRemoveResponse,
+	GetCartResponse,
 	Product,
 	ProductByHandle,
 	ProductResponse,
@@ -13,12 +15,6 @@ import type {
 const domain = process.env.SHOPIFY_STORE_DOMAIN;
 const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
-/**
- * Fetches data from the Shopify API
- * @template T - The specific shape of the response you expect
- * @param query - The GraphQL query string
- * @param variables - Optional variables for the query
- */
 async function ShopifyData<T>(query: string, variables?: object): Promise<T> {
 	if (!domain || !storefrontAccessToken) {
 		throw new Error("Missing Shopify API Environment Variables");
@@ -141,6 +137,24 @@ export async function createCart(variantId: string): Promise<Cart> {
               node {
                 id
                 quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    image {
+                      url
+                      altText
+                    }
+                    product {
+                      title
+                      handle
+                    }
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
               }
             }
           }
@@ -171,6 +185,24 @@ export async function addToCart(
               node {
                 id
                 quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    image {
+                      url
+                      altText
+                    }
+                    product {
+                      title
+                      handle
+                    }
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
               }
             }
           }
@@ -186,4 +218,96 @@ export async function addToCart(
 
 	const response = await ShopifyData<CartAddResponse>(query, variables);
 	return response.data.cartLinesAdd.cart;
+}
+
+export async function getCart(cartId: string): Promise<Cart> {
+	const query = `
+    query getCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        checkoutUrl
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  image {
+                    url
+                    altText
+                  }
+                  product {
+                    title
+                    handle
+                  }
+                  price {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+	const variables = { cartId };
+
+	const response = await ShopifyData<GetCartResponse>(query, variables);
+	return response.data.cart;
+}
+
+export async function removeFromCart(
+	cartId: string,
+	lineId: string,
+): Promise<Cart> {
+	const query = `
+    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+          checkoutUrl
+          lines(first: 100) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    image {
+                      url
+                      altText
+                    }
+                    product {
+                      title
+                      handle
+                    }
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+	const variables = {
+		cartId,
+		lineIds: [lineId],
+	};
+
+	const response = await ShopifyData<CartRemoveResponse>(query, variables);
+	return response.data.cartLinesRemove.cart;
 }

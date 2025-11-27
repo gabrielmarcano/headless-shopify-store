@@ -7,50 +7,69 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { addToCart, createCart } from "@/lib/shopify";
+import { addToCart, createCart, getCart, removeFromCart } from "@/lib/shopify";
+import type { Cart } from "@/lib/types";
 
 type CartContextType = {
-	cartId: string | null;
+	cart: Cart | undefined;
 	addItem: (variantId: string) => Promise<void>;
+	removeItem: (lineId: string) => Promise<void>;
 	openCart: () => void;
+	closeCart: () => void;
 	isCartOpen: boolean;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-	const [cartId, setCartId] = useState<string | null>(null);
+	const [cart, setCart] = useState<Cart | undefined>(undefined);
 	const [isCartOpen, setIsCartOpen] = useState(false);
 
-	// Load Cart ID from local storage on boot
 	useEffect(() => {
-		const storedId = localStorage.getItem("shopify_cart_id");
-		if (storedId) setCartId(storedId);
+		const checkCart = async () => {
+			const storedId = localStorage.getItem("shopify_cart_id");
+			if (storedId) {
+				const existingCart = await getCart(storedId);
+				if (existingCart) {
+					setCart(existingCart);
+				} else {
+					localStorage.removeItem("shopify_cart_id");
+				}
+			}
+		};
+		checkCart();
 	}, []);
 
 	const openCart = () => setIsCartOpen(true);
+	const closeCart = () => setIsCartOpen(false);
 
 	const addItem = async (variantId: string) => {
-		if (!cartId) {
-			// Scenario A: No cart exists yet. Create one.
-			const newCart = await createCart(variantId);
-			setCartId(newCart.id);
+		let newCart: Cart;
+		if (!cart?.id) {
+			newCart = await createCart(variantId);
 			localStorage.setItem("shopify_cart_id", newCart.id);
 		} else {
-			// Scenario B: Cart exists. Add to it.
-			await addToCart(cartId, variantId);
+			newCart = await addToCart(cart.id, variantId);
 		}
-		openCart(); // Open the drawer so user sees the update
+		setCart(newCart);
+		openCart();
+	};
+
+	const removeItem = async (lineId: string) => {
+		if (!cart?.id) return;
+		const updatedCart = await removeFromCart(cart.id, lineId);
+		setCart(updatedCart);
 	};
 
 	return (
-		<CartContext.Provider value={{ cartId, addItem, openCart, isCartOpen }}>
+		<CartContext.Provider
+			value={{ cart, addItem, removeItem, openCart, closeCart, isCartOpen }}
+		>
 			{children}
 		</CartContext.Provider>
 	);
 }
 
-// Custom Hook to use the context easily
 export function useCart() {
 	const context = useContext(CartContext);
 	if (context === undefined) {

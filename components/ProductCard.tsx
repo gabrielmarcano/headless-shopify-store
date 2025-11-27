@@ -35,7 +35,7 @@ export function ProductCard({ product }: ProductCardProps) {
 			<div className="mt-4 flex justify-between">
 				<div>
 					<h3 className="text-sm font-medium text-gray-900">
-						<span aria-hidden="true" className="absolute inset-0" />
+						{/* REMOVED THE SPAN FROM HERE */}
 						{product.title}
 					</h3>
 				</div>

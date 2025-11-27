@@ -36,7 +36,22 @@ export type CartLine = {
 	node: {
 		id: string;
 		quantity: number;
-		// We can add 'merchandise' here later if you want to show product details in the cart
+		merchandise: {
+			id: string;
+			title: string;
+			image: {
+				url: string;
+				altText: string;
+			};
+			product: {
+				title: string;
+				handle: string;
+			};
+			price: {
+				amount: string;
+				currencyCode: string;
+			};
+		};
 	};
 };
 
@@ -75,4 +90,14 @@ export type CartAddResponse = ShopifyResponse<{
 	cartLinesAdd: {
 		cart: Cart;
 	};
+}>;
+
+export type CartRemoveResponse = ShopifyResponse<{
+	cartLinesRemove: {
+		cart: Cart;
+	};
+}>;
+
+export type GetCartResponse = ShopifyResponse<{
+	cart: Cart;
 }>;
