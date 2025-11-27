@@ -26,14 +26,29 @@ export function Navbar() {
 
 				{/* Navigation Links */}
 				<div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
-					<Link href="/" className="hover:text-blue-600 transition-colors">
-						New Arrivals
+					<Link
+						href="/collections/all"
+						className="hover:text-blue-600 transition-colors"
+					>
+						All Products
 					</Link>
-					<Link href="#" className="hover:text-blue-600 transition-colors">
-						Accessories
+					<Link
+						href="/collections/hydrogen"
+						className="hover:text-blue-600 transition-colors"
+					>
+						Hydrogen
 					</Link>
-					<Link href="#" className="hover:text-blue-600 transition-colors">
-						Sale
+					<Link
+						href="/collections/automated-collection"
+						className="hover:text-blue-600 transition-colors"
+					>
+						Automated
+					</Link>
+					<Link
+						href="/collections/frontpage"
+						className="hover:text-blue-600 transition-colors"
+					>
+						Home Collection
 					</Link>
 				</div>
 

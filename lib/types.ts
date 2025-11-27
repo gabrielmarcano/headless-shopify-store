@@ -70,6 +70,15 @@ export type ShopifyResponse<Data> = {
 	errors?: Array<{ message: string }>; // Added error typing
 };
 
+export type CollectionResponse = ShopifyResponse<{
+	collectionByHandle: {
+		title: string;
+		products: {
+			edges: Array<{ node: Product }>;
+		};
+	} | null;
+}>;
+
 export type ProductsResponse = ShopifyResponse<{
 	products: {
 		edges: Array<{ node: Product }>;

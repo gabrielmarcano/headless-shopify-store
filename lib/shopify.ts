@@ -5,6 +5,7 @@ import type {
 	CartAddResponse,
 	CartCreateResponse,
 	CartRemoveResponse,
+	CollectionResponse,
 	GetCartResponse,
 	Product,
 	ProductByHandle,
@@ -121,6 +122,51 @@ export async function getProductByHandle(
 
 	const response = await ShopifyData<ProductResponse>(query);
 	return response.data.product;
+}
+
+export async function getCollectionProducts(handle: string) {
+	if (handle === "all") {
+		const allProducts = await getProductsInCollection(); // Reusing your existing query
+		return {
+			title: "All Products",
+			products: { edges: allProducts },
+		};
+	}
+
+	const query = `
+    query getCollectionProducts($handle: String!) {
+      collectionByHandle(handle: $handle) {
+        title
+        products(first: 20) {
+          edges {
+            node {
+              id
+              title
+              handle
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+	const variables = { handle };
+	const response = await ShopifyData<CollectionResponse>(query, variables);
+	return response.data.collectionByHandle;
 }
 
 // --- MUTATIONS ---
