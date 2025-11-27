@@ -63,6 +63,16 @@ export type Cart = {
 	};
 };
 
+export type Collection = {
+	id: string;
+	title: string;
+	handle: string;
+	image?: {
+		url: string;
+		altText: string;
+	};
+};
+
 // --- API RESPONSE WRAPPERS ---
 
 export type ShopifyResponse<Data> = {
@@ -78,6 +88,12 @@ export type ProductsResponse = ShopifyResponse<{
 
 export type ProductResponse = ShopifyResponse<{
 	product: ProductByHandle;
+}>;
+
+export type CollectionsResponse = ShopifyResponse<{
+	collections: {
+		edges: Array<{ node: Collection }>;
+	};
 }>;
 
 export type CollectionResponse = ShopifyResponse<{

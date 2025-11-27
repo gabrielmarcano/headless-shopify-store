@@ -6,8 +6,8 @@ import type {
 	CartCreateResponse,
 	CartRemoveResponse,
 	CollectionResponse,
+	CollectionsResponse,
 	GetCartResponse,
-	Product,
 	ProductByHandle,
 	ProductResponse,
 	ProductsResponse,
@@ -52,12 +52,10 @@ async function ShopifyData<T>(query: string, variables?: object): Promise<T> {
 
 // --- QUERIES ---
 
-export async function getProductsInCollection(): Promise<
-	Array<{ node: Product }>
-> {
+export async function getProductsInCollection(limit = 8) {
 	const query = `
   {
-    products(first: 5) {
+    products(first: ${limit}) {
       edges {
         node {
           id
@@ -123,6 +121,28 @@ export async function getProductByHandle(
 
 	const response = await ShopifyData<ProductResponse>(query);
 	return response.data.product;
+}
+
+export async function getCollections() {
+	const query = `
+  {
+    collections(first: 4) {
+      edges {
+        node {
+          id
+          title
+          handle
+          image {
+            url
+            altText
+          }
+        }
+      }
+    }
+  }`;
+
+	const response = await ShopifyData<CollectionsResponse>(query);
+	return response.data.collections.edges;
 }
 
 export async function getCollectionProducts(handle: string) {
