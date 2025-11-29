@@ -16,9 +16,16 @@ export type Product = {
 			};
 		}>;
 	};
+	variants: {
+		edges: Array<{
+			node: {
+				id: string;
+			};
+		}>;
+	};
 };
 
-export type ProductByHandle = Product & {
+export type ProductByHandle = Omit<Product, "variants"> & {
 	descriptionHtml: string;
 	options: ProductOption[];
 	variants: {

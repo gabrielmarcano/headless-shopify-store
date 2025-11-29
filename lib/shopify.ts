@@ -51,8 +51,6 @@ async function ShopifyData<T>(query: string, variables?: object): Promise<T> {
 	}
 }
 
-// --- QUERIES ---
-
 export async function getProductsInCollection(limit = 8) {
 	const query = `
   {
@@ -73,6 +71,13 @@ export async function getProductsInCollection(limit = 8) {
               node {
                 url
                 altText
+              }
+            }
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                id
               }
             }
           }
@@ -128,7 +133,6 @@ export async function getProductByHandle(
               amount
               currencyCode
             }
-            # --- ADD THIS SECTION ---
             image {
               url
               altText
@@ -165,18 +169,12 @@ export async function getCollections() {
 	return response.data.collections.edges;
 }
 
-// src/lib/shopify.ts
-
-// Update the function signature to accept sortKey and reverse
 export async function getCollectionProducts(
 	handle: string,
 	sortKey = "COLLECTION_DEFAULT",
 	reverse = false,
 ) {
-	// 1. Handle the "All Products" special case with sorting
 	if (handle === "all") {
-		// "All Products" query needs a slightly different sort key map if using products query
-		// But for simplicity, we can just map 'COLLECTION_DEFAULT' to 'TITLE' or 'CREATED' for 'all'
 		const allSortKey = sortKey === "COLLECTION_DEFAULT" ? "TITLE" : sortKey;
 
 		const query = `
@@ -201,6 +199,13 @@ export async function getCollectionProducts(
                 }
               }
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
           }
         }
       }
@@ -213,7 +218,6 @@ export async function getCollectionProducts(
 		};
 	}
 
-	// 2. The Normal Collection Query
 	const query = `
     query getCollectionProducts($handle: String!, $sortKey: ProductCollectionSortKeys!, $reverse: Boolean!) {
       collectionByHandle(handle: $handle) {
@@ -235,6 +239,13 @@ export async function getCollectionProducts(
                   node {
                     url
                     altText
+                  }
+                }
+              }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
                   }
                 }
               }
@@ -278,6 +289,13 @@ export async function searchProducts(
                   }
                 }
               }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
             }
           }
         }
@@ -312,6 +330,13 @@ export async function getProductRecommendations(productId: string) {
             }
           }
         }
+        variants(first: 1) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     }
   `;
@@ -324,8 +349,6 @@ export async function getProductRecommendations(productId: string) {
 	);
 	return response.data.productRecommendations;
 }
-
-// --- MUTATIONS ---
 
 export async function createCart(variantId: string): Promise<Cart> {
 	const query = `

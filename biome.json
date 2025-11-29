@@ -1,0 +1,15 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "files": {
+    "ignore": [".next", "node_modules", "package-lock.json", "public"]
+  },
+  "css": {
+    "parser": {
+      "cssModules": true,
+      "allowWrongLineComments": false
+    },
+    "linter": {
+      "enabled": true
+    }
+  }
+}
