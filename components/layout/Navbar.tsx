@@ -7,7 +7,6 @@ import { useCart } from "@/components/cart/CartContext";
 export function Navbar() {
 	const { cart, openCart } = useCart();
 
-	// Calculate total quantity of all items in the cart
 	const cartCount =
 		cart?.lines?.edges.reduce((total, item) => {
 			return total + item.node.quantity;
@@ -16,7 +15,6 @@ export function Navbar() {
 	return (
 		<nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
 			<div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-				{/* Logo */}
 				<Link
 					href="/"
 					className="text-xl font-bold tracking-tight text-gray-900"
@@ -24,7 +22,6 @@ export function Navbar() {
 					STORE<span className="text-blue-600">FRONT</span>
 				</Link>
 
-				{/* SEARCH BAR (New Feature) */}
 				<div className="hidden md:flex flex-1 max-w-md mx-8">
 					<form action="/search" className="relative w-full">
 						<input
@@ -37,7 +34,6 @@ export function Navbar() {
 					</form>
 				</div>
 
-				{/* Navigation Links (Simplified for space) */}
 				<div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
 					<Link href="/collections/all" className="hover:text-blue-600">
 						All
@@ -47,7 +43,6 @@ export function Navbar() {
 					</Link>
 				</div>
 
-				{/* Cart Icon */}
 				<div className="flex items-center">
 					<button
 						type="button"
@@ -66,7 +61,6 @@ export function Navbar() {
 							)}
 						</div>
 
-						{/* Desktop Text Label (Optional, often hidden on mobile) */}
 						<span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800 sr-only sm:not-sr-only">
 							{cartCount}
 						</span>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
-import { SortSelect } from "@/components/search/SortSelect"; // Reuse this!
+import { SortSelect } from "@/components/search/SortSelect";
 import { getCollectionProducts } from "@/lib/shopify";
 
 interface CollectionPageProps {
@@ -28,9 +28,8 @@ export default async function CollectionPage({
 	searchParams,
 }: CollectionPageProps) {
 	const { handle } = await params;
-	const { sort } = await searchParams; // Read the sort param
+	const { sort } = await searchParams;
 
-	// Map URL sort param to Shopify ProductCollectionSortKeys
 	let sortKey = "COLLECTION_DEFAULT";
 	let reverse = false;
 
@@ -43,7 +42,7 @@ export default async function CollectionPage({
 			sortKey = "PRICE";
 			reverse = true;
 			break;
-		case "created-desc": // New option: Newest first
+		case "created-desc":
 			sortKey = "CREATED";
 			reverse = true;
 			break;
@@ -61,7 +60,7 @@ export default async function CollectionPage({
 				<h1 className="text-4xl font-bold tracking-tight text-gray-900">
 					{collection.title}
 				</h1>
-				{/* Add the Sort Dropdown */}
+
 				<SortSelect />
 			</div>
 

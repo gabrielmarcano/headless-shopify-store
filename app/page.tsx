@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Hero } from "@/components/home/Hero";
 import { ProductCard } from "@/components/ProductCard";
 import { getCollections, getProductsInCollection } from "@/lib/shopify";
-import type { Collection, Product } from "@/lib/types"; // Import Collection type
+import type { Collection, Product } from "@/lib/types";
 
 export default async function Home() {
 	const products = await getProductsInCollection(8);
@@ -14,13 +14,11 @@ export default async function Home() {
 			<Hero />
 
 			<main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
-				{/* SECTION 1: Shop by Category */}
 				<section>
 					<h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6">
 						Shop by Category
 					</h2>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						{/* Typed correctly now: item.node is a Collection */}
 						{collections.map((item: { node: Collection }) => {
 							const collection = item.node;
 							return (
@@ -49,7 +47,6 @@ export default async function Home() {
 					</div>
 				</section>
 
-				{/* SECTION 2: New Arrivals */}
 				<section>
 					<div className="flex justify-between items-end mb-6">
 						<h2 className="text-2xl font-bold tracking-tight text-gray-900">

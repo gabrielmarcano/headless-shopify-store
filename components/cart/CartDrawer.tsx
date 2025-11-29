@@ -9,16 +9,13 @@ import { useCart } from "./CartContext";
 export function CartDrawer() {
 	const { cart, isCartOpen, closeCart } = useCart();
 
-	// --- NEW CALCULATION LOGIC ---
 	const cartTotal =
 		cart?.lines.edges.reduce((total, { node }) => {
 			return total + parseFloat(node.merchandise.price.amount) * node.quantity;
 		}, 0) || 0;
 
-	// Grab currency from the first item, or default to USD
 	const currencyCode =
 		cart?.lines.edges[0]?.node.merchandise.price.currencyCode || "USD";
-	// -----------------------------
 
 	if (!isCartOpen) return null;
 
@@ -97,7 +94,7 @@ export function CartDrawer() {
 					<div className="p-4 border-t bg-gray-50">
 						<div className="flex justify-between text-base font-medium text-gray-900 mb-4">
 							<p>Subtotal</p>
-							{/* --- USE THE CALCULATED TOTAL --- */}
+
 							<p>{formatPrice(cartTotal.toString(), currencyCode)}</p>
 						</div>
 						<a

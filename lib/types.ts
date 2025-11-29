@@ -1,4 +1,3 @@
-// --- PRODUCT TYPES ---
 export type Product = {
 	id: string;
 	title: string;
@@ -21,10 +20,10 @@ export type Product = {
 
 export type ProductByHandle = Product & {
 	descriptionHtml: string;
-	options: ProductOption[]; // <--- NEW
+	options: ProductOption[];
 	variants: {
 		edges: Array<{
-			node: ProductVariant; // <--- UPDATED (was simple object before)
+			node: ProductVariant;
 		}>;
 	};
 };
@@ -55,7 +54,6 @@ export type ProductVariant = {
 	};
 };
 
-// --- CART TYPES ---
 export type CartLine = {
 	node: {
 		id: string;
@@ -97,11 +95,9 @@ export type Collection = {
 	};
 };
 
-// --- API RESPONSE WRAPPERS ---
-
 export type ShopifyResponse<Data> = {
 	data: Data;
-	errors?: Array<{ message: string }>; // Added error typing
+	errors?: Array<{ message: string }>;
 };
 
 export type ProductsResponse = ShopifyResponse<{

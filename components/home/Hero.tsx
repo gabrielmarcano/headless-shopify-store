@@ -1,19 +1,16 @@
-// src/components/home/Hero.tsx
-
 import Image from "next/image";
 import Link from "next/link";
 
 export function Hero() {
 	return (
 		<div className="relative bg-gray-900 h-[600px] flex items-center">
-			{/* Background Image Overlay */}
 			<div className="absolute inset-0 overflow-hidden">
 				<Image
 					src="https://images.unsplash.com/photo-1522056615691-da7b8106c665?q=80&w=2669&auto=format&fit=crop"
 					alt="Hero background"
 					fill
 					className="object-cover opacity-50"
-					priority // Loads immediately as it's above the fold
+					priority
 				/>
 			</div>
 

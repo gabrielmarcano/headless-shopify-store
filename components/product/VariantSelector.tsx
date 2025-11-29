@@ -8,7 +8,6 @@ export function VariantSelector({ options }: { options: ProductOption[] }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
-	// Helper to check if a value is currently selected in the URL
 	const isActive = (name: string, value: string) => {
 		const currentValue = searchParams.get(name);
 		return currentValue === value;

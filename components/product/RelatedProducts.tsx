@@ -6,7 +6,6 @@ export async function RelatedProducts({ id }: { id: string }) {
 
 	if (!products || products.length === 0) return null;
 
-	// Limit to 4 items for a nice row
 	const limitedProducts = products.slice(0, 4);
 
 	return (

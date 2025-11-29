@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/ProductCard";
-import { SortSelect } from "@/components/search/SortSelect"; // <--- Import this
+import { SortSelect } from "@/components/search/SortSelect";
 import { searchProducts } from "@/lib/shopify";
 import type { Product } from "@/lib/types";
 
@@ -42,7 +42,6 @@ export default async function SearchPage({
 					{query ? `Results for "${query}"` : "Search"}
 				</h1>
 
-				{/* Replace the old <form> with this Client Component */}
 				{products.edges.length > 0 && <SortSelect />}
 			</div>
 

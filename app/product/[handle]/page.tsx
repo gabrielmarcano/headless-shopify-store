@@ -25,7 +25,7 @@ export async function generateMetadata({
 		title: `${product.title} | Headless Store`,
 		description: product.descriptionHtml
 			.substring(0, 160)
-			.replace(/<[^>]*>?/gm, ""), // Strip HTML tags for SEO
+			.replace(/<[^>]*>?/gm, ""),
 		openGraph: {
 			images: [product.images.edges[0]?.node.url],
 		},
@@ -43,22 +43,15 @@ export default async function ProductPage({
 
 	if (!product) return notFound();
 
-	// --- LOGIC: FIND SELECTED VARIANT ---
-	// 1. Iterate through all variants
 	const selectedVariant =
 		product.variants.edges.find(({ node: variant }) => {
-			// 2. Check if every option in the variant matches the URL params
 			return variant.selectedOptions.every((option) => {
-				// If URL has ?Size=Large, we check if this variant's Size is Large.
-				// If URL param is missing, we default to the first value (Shopify logic).
 				const paramValue = resolvedSearchParams[option.name];
 				return paramValue ? paramValue === option.value : true;
 			});
-		})?.node || product.variants.edges[0].node; // Fallback to first variant if no match
+		})?.node || product.variants.edges[0].node;
 
-	// --- END LOGIC ---
-
-	const image = selectedVariant.image || product.images.edges[0]?.node; // Use variant image if available
+	const image = selectedVariant.image || product.images.edges[0]?.node;
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
@@ -69,7 +62,6 @@ export default async function ProductPage({
 				]}
 			/>
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-				{/* Image Column */}
 				<div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
 					{image && (
 						<Image
@@ -82,7 +74,6 @@ export default async function ProductPage({
 					)}
 				</div>
 
-				{/* Details Column */}
 				<div className="flex flex-col space-y-8">
 					<div>
 						<h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -96,7 +87,6 @@ export default async function ProductPage({
 						</p>
 					</div>
 
-					{/* --- VARIANT SELECTOR --- */}
 					<VariantSelector options={product.options} />
 
 					<div
@@ -106,7 +96,6 @@ export default async function ProductPage({
 					/>
 
 					<div className="mt-6">
-						{/* Pass selectedVariant.availableForSale to disable button if OOS */}
 						{selectedVariant.availableForSale ? (
 							<AddToCart variantId={selectedVariant.id} />
 						) : (

@@ -34,10 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
 			<div className="mt-4 flex justify-between">
 				<div>
-					<h3 className="text-sm font-medium text-gray-900">
-						{/* REMOVED THE SPAN FROM HERE */}
-						{product.title}
-					</h3>
+					<h3 className="text-sm font-medium text-gray-900">{product.title}</h3>
 				</div>
 				<p className="text-sm font-medium text-gray-900">
 					{formatPrice(price.amount, price.currencyCode)}
