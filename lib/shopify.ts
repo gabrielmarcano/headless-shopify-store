@@ -9,6 +9,7 @@ import type {
 	CollectionsResponse,
 	GetCartResponse,
 	ProductByHandle,
+	ProductRecommendationsResponse,
 	ProductResponse,
 	ProductsResponse,
 	SearchResponse,
@@ -108,11 +109,30 @@ export async function getProductByHandle(
           }
         }
       }
-      variants(first: 1) {
+      options {
+        name
+        values
+        id
+      }
+      variants(first: 25) {
         edges {
           node {
             id
             title
+            availableForSale
+            selectedOptions {
+              name
+              value
+            }
+            price {
+              amount
+              currencyCode
+            }
+            # --- ADD THIS SECTION ---
+            image {
+              url
+              altText
+            }
           }
         }
       }
@@ -145,20 +165,60 @@ export async function getCollections() {
 	return response.data.collections.edges;
 }
 
-export async function getCollectionProducts(handle: string) {
+// src/lib/shopify.ts
+
+// Update the function signature to accept sortKey and reverse
+export async function getCollectionProducts(
+	handle: string,
+	sortKey = "COLLECTION_DEFAULT",
+	reverse = false,
+) {
+	// 1. Handle the "All Products" special case with sorting
 	if (handle === "all") {
-		const allProducts = await getProductsInCollection(); // Reusing your existing query
+		// "All Products" query needs a slightly different sort key map if using products query
+		// But for simplicity, we can just map 'COLLECTION_DEFAULT' to 'TITLE' or 'CREATED' for 'all'
+		const allSortKey = sortKey === "COLLECTION_DEFAULT" ? "TITLE" : sortKey;
+
+		const query = `
+    {
+      products(first: 20, sortKey: ${allSortKey}, reverse: ${reverse}) {
+        edges {
+          node {
+            id
+            title
+            handle
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+          }
+        }
+      }
+    }`;
+
+		const response = await ShopifyData<ProductsResponse>(query);
 		return {
 			title: "All Products",
-			products: { edges: allProducts },
+			products: response.data.products,
 		};
 	}
 
+	// 2. The Normal Collection Query
 	const query = `
-    query getCollectionProducts($handle: String!) {
+    query getCollectionProducts($handle: String!, $sortKey: ProductCollectionSortKeys!, $reverse: Boolean!) {
       collectionByHandle(handle: $handle) {
         title
-        products(first: 20) {
+        products(first: 20, sortKey: $sortKey, reverse: $reverse) {
           edges {
             node {
               id
@@ -185,7 +245,7 @@ export async function getCollectionProducts(handle: string) {
     }
   `;
 
-	const variables = { handle };
+	const variables = { handle, sortKey, reverse };
 	const response = await ShopifyData<CollectionResponse>(query, variables);
 	return response.data.collectionByHandle;
 }
@@ -227,9 +287,42 @@ export async function searchProducts(
 
 	const variables = { query, sortKey, reverse };
 
-	// We can reuse ProductsResponse type here as the shape is similar enough for the grid
 	const response = await ShopifyData<SearchResponse>(gqlQuery, variables);
 	return response.data.search;
+}
+
+export async function getProductRecommendations(productId: string) {
+	const query = `
+    query productRecommendations($productId: ID!) {
+      productRecommendations(productId: $productId) {
+        id
+        title
+        handle
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        images(first: 1) {
+          edges {
+            node {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  `;
+
+	const variables = { productId };
+
+	const response = await ShopifyData<ProductRecommendationsResponse>(
+		query,
+		variables,
+	);
+	return response.data.productRecommendations;
 }
 
 // --- MUTATIONS ---

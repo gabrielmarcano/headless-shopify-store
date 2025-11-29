@@ -21,13 +21,37 @@ export type Product = {
 
 export type ProductByHandle = Product & {
 	descriptionHtml: string;
+	options: ProductOption[]; // <--- NEW
 	variants: {
 		edges: Array<{
-			node: {
-				id: string;
-				title: string;
-			};
+			node: ProductVariant; // <--- UPDATED (was simple object before)
 		}>;
+	};
+};
+
+export type ProductOption = {
+	id: string;
+	name: string;
+	values: string[];
+};
+
+export type SelectedOption = {
+	name: string;
+	value: string;
+};
+
+export type ProductVariant = {
+	id: string;
+	title: string;
+	availableForSale: boolean;
+	selectedOptions: SelectedOption[];
+	price: {
+		amount: string;
+		currencyCode: string;
+	};
+	image?: {
+		url: string;
+		altText: string;
 	};
 };
 
@@ -109,6 +133,10 @@ export type SearchResponse = ShopifyResponse<{
 	search: {
 		edges: Array<{ node: Product }>;
 	};
+}>;
+
+export type ProductRecommendationsResponse = ShopifyResponse<{
+	productRecommendations: Product[];
 }>;
 
 export type CartCreateResponse = ShopifyResponse<{

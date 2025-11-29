@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
+import { SortSelect } from "@/components/search/SortSelect"; // Reuse this!
 import { getCollectionProducts } from "@/lib/shopify";
 
 interface CollectionPageProps {
 	params: Promise<{ handle: string }>;
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({
@@ -21,9 +23,33 @@ export async function generateMetadata({
 	};
 }
 
-export default async function CollectionPage({ params }: CollectionPageProps) {
+export default async function CollectionPage({
+	params,
+	searchParams,
+}: CollectionPageProps) {
 	const { handle } = await params;
-	const collection = await getCollectionProducts(handle);
+	const { sort } = await searchParams; // Read the sort param
+
+	// Map URL sort param to Shopify ProductCollectionSortKeys
+	let sortKey = "COLLECTION_DEFAULT";
+	let reverse = false;
+
+	switch (sort) {
+		case "price-asc":
+			sortKey = "PRICE";
+			reverse = false;
+			break;
+		case "price-desc":
+			sortKey = "PRICE";
+			reverse = true;
+			break;
+		case "created-desc": // New option: Newest first
+			sortKey = "CREATED";
+			reverse = true;
+			break;
+	}
+
+	const collection = await getCollectionProducts(handle, sortKey, reverse);
 
 	if (!collection) {
 		return notFound();
@@ -31,9 +57,13 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-			<h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-8">
-				{collection.title}
-			</h1>
+			<div className="flex justify-between items-end mb-8">
+				<h1 className="text-4xl font-bold tracking-tight text-gray-900">
+					{collection.title}
+				</h1>
+				{/* Add the Sort Dropdown */}
+				<SortSelect />
+			</div>
 
 			{collection.products.edges.length === 0 ? (
 				<p className="text-gray-500">No products found in this collection.</p>
