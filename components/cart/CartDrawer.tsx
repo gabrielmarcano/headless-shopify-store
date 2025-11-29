@@ -34,7 +34,7 @@ export function CartDrawer() {
 					<button
 						type="button"
 						onClick={closeCart}
-						className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+						className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
 					>
 						<X className="w-6 h-6" />
 					</button>
@@ -94,12 +94,11 @@ export function CartDrawer() {
 					<div className="p-4 border-t bg-gray-50">
 						<div className="flex justify-between text-base font-medium text-gray-900 mb-4">
 							<p>Subtotal</p>
-
 							<p>{formatPrice(cartTotal.toString(), currencyCode)}</p>
 						</div>
 						<a
 							href={cart.checkoutUrl}
-							className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700"
+							className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-blue-700 cursor-pointer"
 						>
 							Checkout
 						</a>
@@ -125,7 +124,7 @@ function RemoveButton({ lineId }: { lineId: string }) {
 			type="button"
 			onClick={handleRemove}
 			disabled={isRemoving}
-			className="ml-2 p-1 text-gray-400 hover:text-red-500 transition-colors"
+			className="ml-2 p-1 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
 			aria-label="Remove item"
 		>
 			{isRemoving ? (
