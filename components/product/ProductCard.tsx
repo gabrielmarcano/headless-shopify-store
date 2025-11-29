@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/components/cart/CartContext";
 import { useState } from "react";
 import { Loader2, Plus } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ProductCardProps {
   product: Product;
@@ -34,7 +35,11 @@ export function ProductCard({ product }: ProductCardProps) {
       href={`/product/${product.handle}`}
       className="group block"
     >
-      <div className="relative aspect-square w-full overflow-hidden rounded-sm bg-surface border border-border flex items-center justify-center p-6 transition-colors hover:border-gray-300">
+      <motion.div 
+        whileHover={{ y: -4 }}
+        transition={{ type: "spring", stiffness: 300 }}
+        className="relative aspect-square w-full overflow-hidden rounded-sm bg-surface border border-border flex items-center justify-center p-6 transition-colors hover:border-gray-300"
+      >
         {image ? (
           <Image
             src={image.url}
@@ -50,11 +55,12 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {defaultVariantId && (
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
             type="button"
             onClick={handleQuickAdd}
             disabled={isAdding}
-            className="absolute bottom-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-accent hover:bg-accent-hover text-white p-2 rounded-full shadow-sm z-10"
+            className="absolute bottom-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-accent hover:bg-accent-hover text-white p-2 rounded-full shadow-sm z-10 cursor-pointer"
             aria-label="Quick Add"
           >
             {isAdding ? (
@@ -62,9 +68,9 @@ export function ProductCard({ product }: ProductCardProps) {
             ) : (
               <Plus className="w-5 h-5" />
             )}
-          </button>
+          </motion.button>
         )}
-      </div>
+      </motion.div>
 
       <div className="mt-4 flex justify-between items-start gap-4">
         <div>

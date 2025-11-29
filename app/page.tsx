@@ -1,9 +1,9 @@
 import { getProductsInCollection, getCollections } from "@/lib/shopify";
 import { Hero } from "@/components/home/Hero";
+import { ProductGrid } from "@/components/product/ProductGrid";
 import Link from "next/link";
 import Image from "next/image";
-import type { Product, Collection } from "@/lib/types";
-import { ProductCard } from "@/components/product/ProductCard";
+import type { Collection } from "@/lib/types";
 
 export default async function Home() {
   const products = await getProductsInCollection(8);
@@ -14,7 +14,6 @@ export default async function Home() {
       <Hero />
 
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32 -mt-24 relative z-20">
-        
         
         <section>
           <h2 className="sr-only">Collections</h2>
@@ -50,7 +49,6 @@ export default async function Home() {
           </div>
         </section>
 
-        
         <section>
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-border pb-6">
             <div>
@@ -69,11 +67,7 @@ export default async function Home() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products.map((item: { node: Product }) => (
-              <ProductCard key={item.node.id} product={item.node} />
-            ))}
-          </div>
+          <ProductGrid products={products.map(p => p.node)} />
         </section>
 
       </main>
