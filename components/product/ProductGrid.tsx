@@ -1,5 +1,5 @@
 import type { Product } from "@/lib/types";
-import { ProductCard } from "./product/ProductCard";
+import { ProductCard } from "./ProductCard";
 
 export function ProductGrid({ products }: { products: Product[] }) {
 	return (
