@@ -1,5 +1,5 @@
-import { ProductGrid } from "@/components/ProductGrid";
 import { getProductRecommendations } from "@/lib/shopify";
+import { ProductGrid } from "./ProductGrid";
 
 export async function RelatedProducts({ id }: { id: string }) {
 	const products = await getProductRecommendations(id);

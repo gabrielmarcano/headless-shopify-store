@@ -1,4 +1,4 @@
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/search/SortSelect";
 import { searchProducts } from "@/lib/shopify";
 import type { Product } from "@/lib/types";

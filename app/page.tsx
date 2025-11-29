@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Hero } from "@/components/home/Hero";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/product/ProductCard";
 import { getCollections, getProductsInCollection } from "@/lib/shopify";
 import type { Collection, Product } from "@/lib/types";
 

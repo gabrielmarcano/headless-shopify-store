@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/product/ProductCard";
 import { SortSelect } from "@/components/search/SortSelect";
 import { getCollectionProducts } from "@/lib/shopify";
 
