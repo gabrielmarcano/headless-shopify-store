@@ -27,8 +27,14 @@ export async function generateMetadata({
       .substring(0, 160)
       .replace(/<[^>]*>?/gm, ""),
     openGraph: {
-      images: [product.images.edges[0]?.node.url],
-    },
+      images: [
+        {
+          url: `/og?title=${encodeURIComponent(product.title)}&subtitle=${encodeURIComponent(product.priceRange.minVariantPrice.amount)}`,
+          width: 1200,
+          height: 630,
+        }
+      ]
+    }
   };
 }
 

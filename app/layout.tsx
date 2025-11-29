@@ -18,9 +18,42 @@ const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
 });
 
+const baseUrl = process.env.VERCEL_URL 
+  ? `https://${process.env.VERCEL_URL}` 
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Headless Storefront | Next.js + Shopify",
-  description: "A high-performance e-commerce demo built with Next.js 15.",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Headless Storefront",
+    template: "%s | Headless Storefront",
+  },
+  description: "Premium snowboarding gear and apparel. Engineered for performance.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: baseUrl,
+    siteName: "Headless Storefront",
+    title: "Headless Storefront",
+    description: "Premium snowboarding gear and apparel.",
+    images: [
+      {
+        url: "/og",
+        width: 1200,
+        height: 630,
+        alt: "Headless Storefront Social Card",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Headless Storefront",
+    description: "Premium snowboarding gear and apparel.",
+  },
 };
 
 export default function RootLayout({
