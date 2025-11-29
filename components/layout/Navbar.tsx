@@ -90,14 +90,6 @@ export function Navbar() {
 					<div className="flex items-center gap-4">
 						<button
 							type="button"
-							className="md:hidden p-2 text-body hover:text-heading transition-colors"
-							aria-label="Search"
-						>
-							<Search className="h-5 w-5" />
-						</button>
-
-						<button
-							type="button"
 							className="group flex items-center p-2 text-body hover:text-heading transition-colors cursor-pointer relative"
 							onClick={openCart}
 							aria-label="Open cart"
