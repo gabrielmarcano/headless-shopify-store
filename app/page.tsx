@@ -53,10 +53,10 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-border pb-6">
             <div>
               <h2 className="text-3xl font-extrabold tracking-tighter text-heading uppercase">
-                New Arrivals
+                🚀 Featured Gear
               </h2>
               <p className="text-body mt-2 text-sm">
-                The latest gear dropped this week.
+                Premium equipment fresh from our collection.
               </p>
             </div>
             <Link 
