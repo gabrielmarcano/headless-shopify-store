@@ -3,12 +3,16 @@
 ## Overview
 A headless e-commerce storefront built with Next.js 16 and Shopify Storefront API. This app provides a modern shopping experience with product browsing, search, cart functionality, and checkout through Shopify.
 
+## Project Status
+✅ **Production Ready** - All components configured and tested
+
 ## Project Architecture
 - **Framework**: Next.js 16.0.7 with Turbopack
 - **Styling**: Tailwind CSS 4 with Typography plugin
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
 - **API**: Shopify Storefront GraphQL API
+- **Deployment**: Configured for Replit autoscale
 
 ### Directory Structure
 ```
@@ -17,22 +21,32 @@ components/    # Reusable React components
 lib/           # Utility functions and Shopify API client
 ```
 
-## Required Environment Variables
-This project requires Shopify API credentials to function:
-- `SHOPIFY_STORE_DOMAIN` - Your Shopify store domain (e.g., `your-store.myshopify.com`)
+## Configuration
+
+### Environment Variables (Required)
+The app uses Shopify API credentials from Replit Secrets:
+- `SHOPIFY_STORE_DOMAIN` - Your Shopify store domain
 - `SHOPIFY_STOREFRONT_ACCESS_TOKEN` - Storefront API access token
 
-## Development
-- Run: `npm run dev -- -p 5000 -H 0.0.0.0`
-- Build: `npm run build`
-- Start: `npm run start`
+### Next.js Config
+- Dev server bound to `0.0.0.0:5000` for Replit preview access
+- `allowedDevOrigins: ["*"]` configured for cross-origin development
+- Remote image optimization for Shopify CDN and Unsplash
 
-## Deployment
-Configured for autoscale deployment with:
-- Build command: `npm run build`
-- Start command: `npm run start -- -p 5000 -H 0.0.0.0`
+## Development Commands
+- **Dev**: `npm run dev -- -p 5000 -H 0.0.0.0`
+- **Build**: `npm run build`
+- **Production Start**: `npm run start`
+
+## Deployment Configuration
+- **Type**: Autoscale (serverless)
+- **Build**: `npm run build`
+- **Start**: `npm run start -- -p 5000 -H 0.0.0.0`
+- **Ready**: Click "Publish" in the Replit UI to deploy
 
 ## Recent Changes
-- 2025-12-29: Initial Replit environment setup
-  - Configured Next.js dev server on port 5000
-  - Set up deployment configuration
+- 2025-12-29: Replit Environment Setup Complete
+  - ✅ Configured Next.js dev server on port 5000
+  - ✅ Set up Shopify API environment variables
+  - ✅ Verified product loading and storefront functionality
+  - ✅ Deployment configuration ready
